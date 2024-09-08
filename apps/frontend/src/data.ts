@@ -8,7 +8,7 @@ export const useTodos = () => {
 
   useEffect(() => {
     const observable = db.todos.find({
-      sort: [{ created_at: "desc" }, { completed: "desc" }]
+      sort: [{ created_at: "desc" }]
     }).$
     const subscription = observable.subscribe((result) => setTodos(result))
     return () => subscription.unsubscribe()

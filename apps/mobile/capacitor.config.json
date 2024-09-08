@@ -1,0 +1,10 @@
+{
+  "appId": "com.lofitodo.app",
+  "appName": "Lofi Todo",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}

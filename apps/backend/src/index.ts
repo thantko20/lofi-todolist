@@ -3,7 +3,6 @@ import { Hono } from "hono"
 import { createTables } from "./database"
 import { cors } from "hono/cors"
 import { logger } from "hono/logger"
-import { Socket } from "socket.io"
 import { pull, pullQuerySchema, push, pushBodySchema } from "./sync"
 import { zValidator } from "@hono/zod-validator"
 import { initSocket } from "./init-socket"
@@ -28,7 +27,7 @@ const syncRoutes = new Hono()
     return c.json(conflicts)
   })
 
-const app = new Hono<{ Variables: { socketio: Socket } }>()
+const app = new Hono()
   .use(cors({ origin: "*" }))
   .use(logger())
   .route("/", syncRoutes)
@@ -36,12 +35,14 @@ const app = new Hono<{ Variables: { socketio: Socket } }>()
 const port = 3000
 
 await createTables()
-const server = serve({
-  fetch: app.fetch,
-  port
-})
+const server = serve(
+  {
+    fetch: app.fetch,
+    port
+  },
+  (info) => console.log(`Server is running on :${info.port}`)
+)
 
-console.log(`Server is running on port ${port}`)
 const io = initSocket(server)
 
 pullStream$.subscribe((event) => io.emit("pullStream", event))
