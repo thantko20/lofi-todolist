@@ -1,5 +1,5 @@
 {
-  "name": "@lofi-pos/backend",
+  "name": "@lofi-todolist/backend",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc"
@@ -20,5 +20,10 @@
     "@types/better-sqlite3": "^7.6.11",
     "@types/node": "^20.11.17",
     "tsx": "^4.7.1"
+  },
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
   }
 }
