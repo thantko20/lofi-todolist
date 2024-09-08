@@ -17,6 +17,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@lofi-todolist/eslint": "workspace:*",
     "@types/better-sqlite3": "^7.6.11",
     "@types/node": "^20.11.17",
     "tsx": "^4.7.1"

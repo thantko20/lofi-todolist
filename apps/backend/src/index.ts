@@ -9,6 +9,7 @@ import { zValidator } from "@hono/zod-validator"
 import { initSocket } from "./init-socket"
 import { Subject } from "rxjs"
 
+let lastEventId = 0
 const pullStream$ = new Subject<any>()
 
 const syncRoutes = new Hono()
@@ -27,11 +28,10 @@ const syncRoutes = new Hono()
     return c.json(conflicts)
   })
 
-const app = new Hono<{ Variables: { socketio: Socket } }>().route(
-  "/",
-  syncRoutes
-)
-let lastEventId = 0
+const app = new Hono<{ Variables: { socketio: Socket } }>()
+  .use(cors({ origin: "*" }))
+  .use(logger())
+  .route("/", syncRoutes)
 
 const port = 3000
 
@@ -45,8 +45,5 @@ console.log(`Server is running on port ${port}`)
 const io = initSocket(server)
 
 pullStream$.subscribe((event) => io.emit("pullStream", event))
-
-app.use(cors({ origin: "*" }))
-app.use(logger())
 
 export type AppType = typeof app
